@@ -28,29 +28,34 @@
 		</div>
 
 		<script type="text/template" id="contact-list-item">
-			<%= firstName %> <%= lastName %>
-		</script>
+			<%= firstName %><%= lastName %>
+		</script>		
 
 		<script type="text/javascript">
-		var contacts = new ContactManager.Entities.ContactCollection([
-		// our contact data goes here
-			{
-				firstName: "Bob",
-				lastName: "Brigham",
-				phoneNumber: "555-0163"
-			},
-			{
-				firstName: "Alice",
-				lastName: "Arten",
-			phoneNumber: "555-0184"
-			},
-			{
-				firstName: "Charlie",
-				lastName: "Campbell",
-				phoneNumber: "555-0129"
-			}
-		]);			
+		ContactManager.ContactItemView = Marionette.ItemView.extend({
+			tagName: "li",
+			template: "#contact-list-item"
+		});	
+
+		ContactManager.ContactsView = Marionette.CollectionView.extend({
+			tagName: "ul",
+			itemView: ContactManager.ContactItemView
+		});	
+		
+		ContactManager.on("initialize:after", function(){
+			var contacts = ContactManager.request("contact:entities");
+
+			var contactsListView = new ContactManager.ContactsView({
+				collection: contacts
+			});
+
+			ContactManager.mainRegion.show(contactsListView);
+		});
+
+		ContactManager.start();
 			
 		</script>	
+
+
 	</body>
 </html>	
