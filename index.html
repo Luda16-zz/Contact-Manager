@@ -3,17 +3,18 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Marionette Contact Manager</title>
-		<link href="./assets/css/bootstrap.css" rel="stylesheet">
-		<link href="./assets/css/application.css" rel="stylesheet">
-	</head>
-
-	<body>
 		<script src="./assets/js/vendor/jquery.js"></script>
 		<script src="./assets/js/vendor/json2.js"></script>
 		<script src="./assets/js/vendor/underscore.js"></script>
 		<script src="./assets/js/vendor/backbone.js"></script>
 		<script src="./assets/js/vendor/backbone.marionette.js"></script>
-		
+		<script src="./assets/js/app.js"></script>
+		<script src="./assets/js/entities/contact.js"></script>
+		<link href="./assets/css/bootstrap.css" rel="stylesheet">
+		<link href="./assets/css/application.css" rel="stylesheet">
+	</head>
+
+	<body>
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container">
@@ -27,61 +28,29 @@
 		</div>
 
 		<script type="text/template" id="contact-list-item">
-			<li><%= firstName %> <%= lastName %></li>
+			<%= firstName %> <%= lastName %>
 		</script>
 
 		<script type="text/javascript">
-			var ContactManager = new Marionette.Application();
-
-			ContactManager.addRegions({
-				mainRegion: "#main-region"
-			});
+		var contacts = new ContactManager.Entities.ContactCollection([
+		// our contact data goes here
+			{
+				firstName: "Bob",
+				lastName: "Brigham",
+				phoneNumber: "555-0163"
+			},
+			{
+				firstName: "Alice",
+				lastName: "Arten",
+			phoneNumber: "555-0184"
+			},
+			{
+				firstName: "Charlie",
+				lastName: "Campbell",
+				phoneNumber: "555-0129"
+			}
+		]);			
 			
-			ContactManager.Contact = Backbone.Model.extend({});
-
-			ContactManager.ContactCollection = Backbone.Collection.extend({
-				model: ContactManager.Contact
-			});
-
-			ContactManager.ContactItemView = Marionette.ItemView.extend({
-				template: "#contact-list-item"
-			});
-
-			ContactManager.ContactView = Marionette.CollectionView.extend({
-				tagName: "ul",
-				ItemView: ContactManager.ContactItemView
-			});
-			
-
-			ContactManager.on("initialize:after", function(){
-				var contacts = new ContactManager.ContactCollection([
-				{
-					firstName: "Bob",
-					lastName: "Brigham",
-					phoneNumber: "555-0163"
-				},
-				{
-					firstName: "Alice",
-					lastName: "Arten",
-					phoneNumber: "555-0184"
-				},
-				{
-					firstName: "Charlie",
-					lastName: "Campbell",
-					phoneNumber: "555-0129"
-				}
-			]);
-
-			var contactsListView = new ContactManager.ContactsView({
-				collection: contacts
-			});
-
-				ContactManager.mainRegion.show(contactsListView){(
-			});
-
-			ContactManager.start();
-		</script>
-		
-		
+		</script>	
 	</body>
 </html>	
