@@ -7,12 +7,14 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
         collection: contacts
       });
 
+      contactsListView.on("itemview:contact:show", function(childView, model){
+        ContactManager.trigger("contact:show", model.get("id"));
+      });
 
-    contactsListView.on("itemview:contact:show", function(childView, model){
-		ContactManager.navigate("contacts/" + model.get("id"));
-		ContactManager.ContactsApp.Show.Controller.showContact(model);
-	});
-	
+      contactsListView.on("itemview:contact:delete", function(childView, model){
+        contacts.remove(model);
+      });
+
       ContactManager.mainRegion.show(contactsListView);
     }
   }
